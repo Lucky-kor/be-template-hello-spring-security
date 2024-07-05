@@ -6,6 +6,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @NoArgsConstructor
 @Getter
@@ -28,6 +30,9 @@ public class Member extends Auditable {
     @Enumerated(value = EnumType.STRING)
     @Column(length = 20, nullable = false)
     private MemberStatus memberStatus = MemberStatus.MEMBER_ACTIVE;
+
+    @ElementCollection(fetch = FetchType.EAGER)
+    private List<String> roles = new ArrayList<>();
 
     public Member(String email) {
         this.email = email;
@@ -53,6 +58,7 @@ public class Member extends Auditable {
     }
 
     public enum MemberRole {
+        // 스프링 씨큐리티를 쓸 땐 ROLE_를 기본으로 붙인다
         ROLE_USER,
         ROLE_ADMIN
     }
